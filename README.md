@@ -13,7 +13,7 @@ MVC Model:
 **Controllers** - MonoBehaviours.  
 **Models** - Domain Models containing data of the game and corresponding logic.  
 
-**+ State** - a part of the **Model**, an attempt to decouple data from logic. **State** contains logic (functionality) and a reference to the **Model**.  
+**+ State** - a part of the **Model**, an attempt to decouple data from logic. **State** contains logic (functionality) and a reference to the **Model** (data).  
 **+ State Machine** - the manager of states, <ins>injected</ins> into the **Model**.
 
 ## Usage:
