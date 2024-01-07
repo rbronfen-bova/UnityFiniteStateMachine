@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using Zenject;
 
 namespace RBronfenBova.FiniteStateMachine
 {
-    public static class DiContainerExtensions 
+    public static class DiContainerExtensions
     {
+        public static void BindStateMachineFactory(this DiContainer container) =>
+            container.BindFactory<StateMachine, StateMachineFactory>();
+        
+        public static void BindStateMachineFactoryForModel<TModel>(this DiContainer container) =>
+            container.BindFactory<TModel, StateMachine<TModel>, StateMachineFactory<TModel>>();
+        
         public static void BindStates(this DiContainer container)
         {
             var assembly = Assembly.GetCallingAssembly();
-            var stateTypes = FindDerivedTypes(assembly, typeof(ModelState<>));
-            foreach (var type in stateTypes)
+            var types = assembly.GetTypes().Where(_ => _.IsClass && !_.IsAbstract && typeof(IState).IsAssignableFrom(_));
+            foreach (var type in types)
             {
                 container.Bind(type).AsTransient();
             }
         }
-
-        private static IEnumerable<Type> FindDerivedTypes(Assembly assembly, Type baseType) =>
-            assembly
-                .GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOfOpenGeneric(baseType));
     }
 }

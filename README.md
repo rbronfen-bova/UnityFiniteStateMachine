@@ -17,10 +17,14 @@ MVC Model:
 **+ State Machine** - the manager of states, <ins>injected</ins> into the **Model**.
 
 ## Usage:
-- Create your own model class, create state class for this model by deriving it from `ModelState<>`, for example
-```
-public class BootstrapState : ModelState<MyApplication> {}
-```
+- Create your own model class, create state class for this model by deriving it from `BaseState<>`, for example  
+`public class BootstrapState : BaseState<MyApplication> {}`  
+`public class BootstrapState : BaseState {}`
+- Bind state machine factory:  
+`Container.BindStateMachineFactoryForModel<MyApplication>();`  
+`Container.BindStateMachineFactory();`
 - Bind states: `Container.BindStates();`.  
-- Bind state machine: `Container.Bind<StateMachine<MyApplication>>();`.  
-- Somewhere set an initial state for the state machine: `_stateMachine.SetStateAsync<BootstrapState>().Forget();`.
+- Inject StateMachineFactory:  
+`public MyApplication(StateMachineFactory<MyApplication> stateMachineFactory)`  
+`public MyApplication(StateMachineFactory stateMachineFactory)`  
+- Set an initial state for the state machine: `_stateMachine.SetStateAsync<BootstrapState>().Forget();`.
